@@ -1,34 +1,64 @@
 :root {
-    --primary: #6c5ce7;
-    --secondary: #a29bfe;
-    --dark: #2d3436;
-    --light: #f5f6fa;
+    --primary: #6c5ce7; /* بنفسجي */
+    --secondary: #a29bfe; /* بنفسجي فاتح */
+    --accent: #00cec9; /* تركواز */
+    --dark-text: #2d3436; /* نص داكن */
+    --light-bg: #f5f6fa; /* خلفية فاتحة */
+    --card-bg: #ffffff; /* خلفية البطاقة */
+    --border-color: #dfe6e9; /* لون الحدود */
 }
 
 body {
-    font-family: 'Noto Sans Symbols', sans-serif;
-    background-color: #f0f2f5;
+    font-family: 'Poppins', 'Noto Sans Symbols', sans-serif;
+    background: linear-gradient(135deg, #6c5ce7 0%, #00cec9 100%); /* خلفية متدرجة */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
     padding: 20px;
+    overflow: hidden; /* منع التمرير */
+    color: var(--dark-text);
+    position: relative; /* لتمكين الخلفية المتحركة */
 }
+
+/* خلفية متحركة بسيطة */
+.background-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    animation: backgroundMove 20s infinite alternate;
+    z-index: -1; /* لجعلها خلف المحتوى */
+}
+
+@keyframes backgroundMove {
+    0% { background-position: 0% 0%, 100% 100%; }
+    100% { background-position: 100% 100%, 0% 0%; }
+}
+
 
 .container {
     width: 100%;
-    max-width: 800px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    padding: 30px;
+    max-width: 650px; /* تصغير الحجم قليلاً */
+    background: var(--card-bg);
+    border-radius: 20px; /* حواف أكثر دائرية */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* ظل أكبر وأوضح */
+    padding: 35px;
+    text-align: center;
+    transform: translateY(0);
+    transition: transform 0.3s ease-out;
 }
 
 h1 {
     color: var(--primary);
-    text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
+    font-size: 2.2em;
+    font-weight: 700;
 }
 
 .toolbox {
@@ -38,50 +68,62 @@ h1 {
 }
 
 textarea {
-    width: 100%;
-    min-height: 120px;
+    width: calc(100% - 30px); /* مع مراعاة البادينج */
+    min-height: 100px;
     padding: 15px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 1.1em;
     resize: vertical;
     font-family: inherit;
+    transition: border-color 0.3s ease;
+    outline: none;
 }
 
-.controls {
-    display: flex;
+textarea:focus {
+    border-color: var(--primary);
+}
+
+.style-buttons {
+    display: grid; /* استخدام Grid لترتيب الأزرار */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* أزرار متجاوبة */
     gap: 10px;
+    margin-bottom: 10px;
 }
 
-select {
-    flex: 1;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    font-family: inherit;
-}
-
-button {
-    background: var(--primary);
+.style-btn {
+    background: var(--secondary);
     color: white;
     border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
+    padding: 12px 15px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1em;
+    font-weight: 600;
     font-family: inherit;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-button:hover {
-    background: var(--secondary);
+.style-btn:hover {
+    background: var(--primary);
+    transform: translateY(-3px); /* تأثير رفع عند التحويم */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
+
+.style-btn.active { /* لتحديد الزر النشط */
+    background: var(--primary);
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+    transform: scale(0.98);
+}
+
 
 .output-container {
-    border: 2px dashed #ddd;
-    border-radius: 8px;
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
     padding: 15px;
+    background-color: var(--light-bg);
+    margin-top: 15px;
 }
 
 .output-header {
@@ -91,16 +133,43 @@ button:hover {
     margin-bottom: 10px;
 }
 
-.output-area {
-    min-height: 50px;
-    font-size: 22px;
-    word-wrap: break-word;
-    line-height: 1.5;
+.output-header h3 {
+    margin: 0;
+    color: var(--dark-text);
+    font-size: 1.2em;
 }
 
-/* تخصيص لكل نمط لضمان الظهور الصحيح */
-.bold-style { font-family: 'Noto Sans Symbols', sans-serif; }
-.sans-style { font-family: 'Noto Sans Symbols', sans-serif; }
-.mono-style { font-family: 'Noto Sans Symbols', monospace; }
-.double-style { font-family: 'Noto Sans Symbols', sans-serif; }
-.circled-style { font-family: 'Noto Sans Symbols', sans-serif; }
+#copyBtn {
+    background: var(--accent); /* لون مختلف لزر النسخ */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+#copyBtn:hover {
+    background: darken(var(--accent), 10%); /* تغميق اللون عند التحويم */
+    transform: scale(1.05);
+}
+
+.output-area {
+    min-height: 60px; /* زيادة الطول قليلاً */
+    font-size: 1.8em; /* تكبير حجم الخط للنتيجة */
+    word-wrap: break-word;
+    line-height: 1.4;
+    color: var(--dark-text);
+    text-align: left;
+    padding: 5px;
+}
+
+/* تخصيص لكل نمط لضمان الظهور الصحيح - تم تحديث الخط الأساسي */
+.bold-style, .sans-style, .double-style, .circled-style { 
+    font-family: 'Noto Sans Symbols', 'Poppins', sans-serif; 
+}
+.mono-style { 
+    font-family: 'Noto Sans Symbols', 'monospace'; /* Monospace له خط خاص به */
+}

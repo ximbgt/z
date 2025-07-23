@@ -5,32 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Text Decorator</title>
     <link rel="stylesheet" href="style.css">
-    <!-- خطوط دعم Unicode -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <div class="background-animation"></div> <div class="container">
         <h1>✨ Advanced Text Decorator</h1>
         
         <div class="toolbox">
-            <textarea id="inputText" placeholder="Type text here..."></textarea>
+            <textarea id="inputText" placeholder="اكتب نصك هنا..."></textarea>
             
-            <div class="controls">
-                <select id="styleSelect">
-                    <option value="bold">Bold Style</option>
-                    <option value="sans">Sans-Serif</option>
-                    <option value="mono">Monospace</option>
-                    <option value="double">Double-Struck</option>
-                    <option value="circled">Circled</option>
-                </select>
-                
-                <button id="transformBtn">Transform</button>
+            <div class="style-buttons">
+                <button class="style-btn" data-style="bold">Bold Style</button>
+                <button class="style-btn" data-style="sans">Sans-Serif</button>
+                <button class="style-btn" data-style="mono">Monospace</button>
+                <button class="style-btn" data-style="double">Double-Struck</button>
+                <button class="style-btn" data-style="circled">Circled</button>
             </div>
             
             <div class="output-container">
                 <div class="output-header">
-                    <h3>Result:</h3>
-                    <button id="copyBtn">Copy</button>
+                    <h3>النتيجة:</h3>
+                    <button id="copyBtn">نسخ</button>
                 </div>
                 <div id="outputText" class="output-area"></div>
             </div>

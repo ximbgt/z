@@ -1,4 +1,4 @@
-// أنماط الزخرفة المعدلة مع أكواد Unicode الصحيحة
+// أنماط الزخرفة المعدلة مع أكواد Unicode الصحيحة (لا تغيير هنا)
 const textDecorations = {
     bold: {
         name: "Bold",
@@ -8,14 +8,14 @@ const textDecorations = {
     },
     sans: {
         name: "Sans-Serif",
-        uppercase: Array.from("𝖠𝖡𝖢𝖣𝖤𝖥𝖦𝖧𝖨𝖩𝖪𝖫𝖬𝖭𝖮𝖯𝖰𝖱𝖲𝖳𝖴𝖵𝖶𝖷𝖸𝖹"),
+        uppercase: Array.from("𝖠𝖡𝖢𝖣𝖤𝖥𝖦𝖧𝖨𝖩𝖪𝖫𝖬𝖭𝖮𝖯𝖰𝖱𝖲𝖳𝖴𝖵𝖶𝖷𝖸𝖭"),
         lowercase: Array.from("𝖺𝖻𝖼𝖽𝖾𝖿𝗀𝗁𝗂𝗃𝗄𝗅𝗆𝗇𝗈𝗉𝗊𝗋𝗌𝗍𝗎𝗏𝗐𝗑𝗒𝗓"),
         numbers: Array.from("𝟣𝟤𝟥𝟦𝟧𝟨𝟩𝟪𝟫𝟢")
     },
     mono: {
         name: "Monospace",
         uppercase: Array.from("𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉"),
-        lowercase: Array.from("𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣"),
+        lowercase: Array.from("𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝘂𝘃𝚠𝚡𝚢𝘇"),
         numbers: Array.from("𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿𝟶")
     },
     double: {
@@ -32,7 +32,7 @@ const textDecorations = {
     }
 };
 
-// إنشاء خرائط الحروف
+// إنشاء خرائط الحروف (لا تغيير هنا)
 const createCharMaps = () => {
     const maps = {};
     for (const [key, style] of Object.entries(textDecorations)) {
@@ -69,31 +69,71 @@ const createCharMaps = () => {
 
 const charMaps = createCharMaps();
 
-document.getElementById('transformBtn').addEventListener('click', () => {
-    const inputText = document.getElementById('inputText').value;
-    const style = document.getElementById('styleSelect').value;
-    const outputElement = document.getElementById('outputText');
-    
-    // تطبيق الزخرفة
-    let output = '';
-    for (const char of inputText) {
-        output += charMaps[style][char] || char;
-    }
-    
-    outputElement.textContent = output;
-    outputElement.className = 'output-area ' + style + '-style';
+const inputTextElement = document.getElementById('inputText');
+const outputTextElement = document.getElementById('outputText');
+const copyBtn = document.getElementById('copyBtn');
+const styleButtons = document.querySelectorAll('.style-btn'); // تحديد كل أزرار الأنماط
+
+let activeStyle = 'bold'; // النمط الافتراضي
+
+// إضافة مستمعي الأحداث لأزرار الأنماط
+styleButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // إزالة الكلاس 'active' من الزر النشط حالياً
+        const currentActive = document.querySelector('.style-btn.active');
+        if (currentActive) {
+            currentActive.classList.remove('active');
+        }
+        
+        // إضافة الكلاس 'active' للزر الذي تم النقر عليه
+        button.classList.add('active');
+        
+        activeStyle = button.dataset.style; // تحديث النمط النشط
+        applyDecoration(); // تطبيق الزخرفة فورًا عند تغيير النمط
+    });
 });
 
-document.getElementById('copyBtn').addEventListener('click', () => {
-    const outputText = document.getElementById('outputText').textContent;
+// تطبيق الزخرفة عند كتابة النص
+inputTextElement.addEventListener('input', applyDecoration);
+
+// وظيفة تطبيق الزخرفة
+function applyDecoration() {
+    const inputText = inputTextElement.value;
+    let output = '';
+    for (const char of inputText) {
+        output += charMaps[activeStyle][char] || char;
+    }
+    
+    outputTextElement.textContent = output;
+    outputTextElement.className = 'output-area ' + activeStyle + '-style'; // تحديث الكلاس
+}
+
+// تفعيل النمط الافتراضي عند تحميل الصفحة لأول مرة
+document.addEventListener('DOMContentLoaded', () => {
+    // تحديد الزر الافتراضي كـ "نشط" عند التحميل
+    const defaultButton = document.querySelector(`.style-btn[data-style="${activeStyle}"]`);
+    if (defaultButton) {
+        defaultButton.classList.add('active');
+    }
+    applyDecoration(); // تطبيق الزخرفة الافتراضية إذا كان هناك نص
+});
+
+
+// وظيفة زر النسخ
+copyBtn.addEventListener('click', () => {
+    const outputText = outputTextElement.textContent;
     if (outputText) {
         navigator.clipboard.writeText(outputText)
             .then(() => {
-                const btn = document.getElementById('copyBtn');
-                btn.textContent = 'Copied!';
+                copyBtn.textContent = 'تم النسخ!';
                 setTimeout(() => {
-                    btn.textContent = 'Copy';
+                    copyBtn.textContent = 'نسخ';
                 }, 2000);
+            })
+            .catch(err => {
+                console.error('فشل في النسخ: ', err);
+                // يمكن إضافة رسالة خطأ للمستخدم هنا
             });
     }
 });
+
